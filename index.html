@@ -36,6 +36,7 @@
       <div class="header-right">
         <span class="date-display" id="currentDate"></span>
         <div style="display:flex; gap:8px;">
+          <button class="btn btn-sm btn-ghost" id="dataSyncBtn" title="데이터 백업 및 복구">🔄 데이터</button>
           <button class="btn btn-sm btn-ghost" id="mobileConnectBtn" title="모바일 연결 QR">📱 모바일</button>
           <button class="btn btn-sm btn-notify" id="notifyToggle" title="반납 알림 설정">
             🔔 알림 설정
@@ -319,6 +320,33 @@
       <div class="form-actions" style="margin-top: 20px;">
         <button class="btn btn-primary" id="closeMobileBtn" style="width: 100%;">닫기</button>
       </div>
+    </div>
+  </div>
+
+  <!-- 데이터 동기화 모달 -->
+  <div class="modal-overlay hidden" id="syncModal">
+    <div class="modal-content" style="max-width: 360px;">
+      <div class="modal-header">
+        <h3>🔄 데이터 백업 및 복구</h3>
+        <button class="btn-close" id="closeSyncBtn">&times;</button>
+      </div>
+      <div class="sync-body" style="padding: 20px 0;">
+        <div class="sync-section" style="margin-bottom: 24px;">
+          <h4 style="margin-bottom: 8px;">📤 데이터 내보내기 (PC → 폰)</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">현재 저장된 모든 정보를 파일로 저장합니다.</p>
+          <button class="btn btn-primary" id="exportBtn" style="width: 100%;">백업 파일 다운로드</button>
+        </div>
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin-bottom: 24px;">
+        <div class="sync-section">
+          <h4 style="margin-bottom: 8px;">📥 데이터 가져오기 (폰에서 실행)</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">백업 파일을 불러와 전체 데이터를 복구합니다.</p>
+          <input type="file" id="importFile" accept=".json" style="display: none;">
+          <button class="btn btn-secondary" id="importBtn" style="width: 100%;">백업 파일 선택하기</button>
+        </div>
+      </div>
+      <p style="font-size: 0.75rem; color: var(--accent-blue); text-align: center; margin-top: 10px;">
+        * 파일을 카톡/메일로 보낸 후 폰에서 열어주세요.
+      </p>
     </div>
   </div>
 

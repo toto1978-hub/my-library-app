@@ -197,6 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupScanner();
   setupNotifications();
   setupMobileConnect();
+  setupDataSync();
   renderAll();
   updateDate();
   checkReturnNotifications();
@@ -761,10 +762,17 @@ function openScanner() {
   body.style.display = '';
   status.innerHTML = '<div class="scanner-pulse"></div><span>카메라를 책 뒷면의 바코드에 맞춰주세요</span>';
 
-  scannedBookData = null;
+  // Check for secure context (HTTPS required for camera)
+  if (!window.isSecureContext && window.location.hostname !== 'localhost') {
+    status.innerHTML = `<span style="color:var(--accent-red)">⚠️ 보안 연결(HTTPS)이 필요합니다. 깃허브 주소로 접속해주세요!</span>`;
+    return;
+  }
 
   // Initialize scanner
   try {
+    if (html5QrScanner) {
+      html5QrScanner.clear();
+    }
     html5QrScanner = new Html5Qrcode('scannerViewfinder');
 
     const config = {
@@ -795,15 +803,25 @@ function openScanner() {
       { facingMode: 'environment' },
       config,
       onScanSuccess,
-      () => { } // ignore scan failures (normal during scanning)
+      (errorMessage) => {
+        // Monitor for permission errors
+        if (errorMessage.includes('Permission')) {
+          status.innerHTML = `<span style="color:var(--accent-red)">⚠️ 카메라 권한을 허용해주세요!</span>`;
+        }
+      }
     ).catch(err => {
       console.error('Camera start error:', err);
-      status.innerHTML = `<span>⚠️ 카메라를 사용할 수 없습니다. HTTPS 또는 localhost에서 실행해주세요.</span>`;
+      let errorMsg = '카메라 시작 실패 (HTTPS 확인 필수)';
+      if (err.name === 'NotAllowedError' || err.toString().includes('Permission')) {
+        errorMsg = '카메라 권한이 거부되었습니다.';
+      } else if (err.name === 'NotFoundError') {
+        errorMsg = '카메라를 찾을 수 없습니다.';
+      }
+      status.innerHTML = `<span style="color:var(--accent-red)">⚠️ ${errorMsg}</span>`;
     });
   } catch (err) {
     console.error('Scanner init error:', err);
-    document.getElementById('scannerStatus').innerHTML =
-      `<span>⚠️ 스캐너를 초기화할 수 없습니다.</span>`;
+    status.innerHTML = `<span style="color:var(--accent-red)">⚠️ 스캐너 초기화 실패</span>`;
   }
 }
 
@@ -963,6 +981,12 @@ function retryScanner() {
 
   scannedBookData = null;
 
+  // Check for secure context
+  if (!window.isSecureContext && window.location.hostname !== 'localhost') {
+    status.innerHTML = `<span style="color:var(--accent-red)">⚠️ 보안 연결(HTTPS)이 필요합니다!</span>`;
+    return;
+  }
+
   // Restart scanner
   if (html5QrScanner) {
     html5QrScanner.clear();
@@ -996,10 +1020,10 @@ function retryScanner() {
       onScanSuccess,
       () => { }
     ).catch(err => {
-      status.innerHTML = `<span>⚠️ 카메라를 다시 시작할 수 없습니다.</span>`;
+      status.innerHTML = `<span style="color:var(--accent-red)">⚠️ 카메라 시작 실패</span>`;
     });
   } catch (err) {
-    status.innerHTML = `<span>⚠️ 스캐너를 재시작할 수 없습니다.</span>`;
+    status.innerHTML = `<span style="color:var(--accent-red)">⚠️ 스캐너 재시작 실패</span>`;
   }
 }
 
@@ -1211,5 +1235,74 @@ function setupMobileConnect() {
   // Close on background click
   modal.addEventListener('click', (e) => {
     if (e.target === modal) modal.classList.add('hidden');
+  });
+}
+
+// ===== 🔄 Data Sync (Export/Import) =====
+function setupDataSync() {
+  const syncBtn = document.getElementById('dataSyncBtn');
+  const modal = document.getElementById('syncModal');
+  const closeBtn = document.getElementById('closeSyncBtn');
+  const exportBtn = document.getElementById('exportBtn');
+  const importBtn = document.getElementById('importBtn');
+  const importFile = document.getElementById('importFile');
+
+  if (!syncBtn || !modal) return;
+
+  syncBtn.addEventListener('click', () => modal.classList.remove('hidden'));
+  closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+
+  // Export Data
+  exportBtn.addEventListener('click', () => {
+    const dataStr = JSON.stringify(state, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `my-library-backup-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    showToast('📤 백업 파일이 생성되었습니다!');
+  });
+
+  // Import Data
+  importBtn.addEventListener('click', () => importFile.click());
+
+  importFile.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!confirm('📥 데이터를 가져오시겠습니까? 현재 기기에 저장된 데이터는 새 데이터로 덮어씌워집니다.')) {
+      importFile.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const importedState = JSON.parse(event.target.result);
+
+        // Basic validation
+        if (importedState.books && importedState.cards && importedState.authors) {
+          state = importedState;
+          saveState();
+          renderAll();
+          modal.classList.add('hidden');
+          showToast('✅ 데이터 복구가 완료되었습니다!');
+        } else {
+          throw new Error('Invalid format');
+        }
+      } catch (err) {
+        showToast('❌ 올바르지 않은 백업 파일입니다.');
+        console.error('Import error:', err);
+      }
+      importFile.value = '';
+    };
+    reader.readAsText(file);
   });
 }
