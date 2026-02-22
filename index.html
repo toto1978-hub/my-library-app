@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나만의 도서관 | My Library</title>
+  <meta name="description" content="빌린 책 관리, 도서관 이용증, 좋아하는 작가 최신작, 추천 도서관까지 한 곳에서 관리하세요.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Libraries -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+
+<body>
+  <!-- Background blobs -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  <div class="bg-blob blob-3"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo">
+          <span class="logo-icon">📚</span>
+          <h1>나만의 도서관</h1>
+        </div>
+        <p class="header-subtitle">내 독서 생활을 한 곳에서</p>
+      </div>
+      <div class="header-right">
+        <span class="date-display" id="currentDate"></span>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-sm btn-ghost" id="mobileConnectBtn" title="모바일 연결 QR">📱 모바일</button>
+          <button class="btn btn-sm btn-notify" id="notifyToggle" title="반납 알림 설정">
+            🔔 알림 설정
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="books" id="tab-books">
+        <span class="tab-icon">📖</span>
+        <span class="tab-label">빌린 책</span>
+        <span class="tab-badge" id="booksBadge" style="display:none">0</span>
+      </button>
+      <button class="tab-btn" data-tab="cards" id="tab-cards">
+        <span class="tab-icon">🪪</span>
+        <span class="tab-label">이용증</span>
+      </button>
+      <button class="tab-btn" data-tab="authors" id="tab-authors">
+        <span class="tab-icon">✍️</span>
+        <span class="tab-label">좋아하는 작가</span>
+      </button>
+      <button class="tab-btn" data-tab="recommend" id="tab-recommend">
+        <span class="tab-icon">🏛️</span>
+        <span class="tab-label">추천 도서관</span>
+      </button>
+    </nav>
+
+    <!-- Tab Contents -->
+    <main class="tab-content">
+
+      <!-- ===== 빌린 책 탭 ===== -->
+      <section class="tab-panel active" id="panel-books">
+        <div class="panel-header">
+          <h2>📖 빌린 책 목록</h2>
+          <div class="panel-header-actions">
+            <button class="btn btn-scan" id="scanBookBtn">
+              <span>📷</span> 바코드 스캔
+            </button>
+            <button class="btn btn-primary" id="addBookBtn">
+              <span>+</span> 새 책 추가
+            </button>
+          </div>
+        </div>
+
+        <!-- 책 추가 폼 -->
+        <div class="form-card hidden" id="bookForm">
+          <h3>새 책 등록</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="bookTitle">📕 책 제목</label>
+              <input type="text" id="bookTitle" placeholder="책 제목을 입력하세요">
+            </div>
+            <div class="form-group">
+              <label for="bookAuthor">✏️ 저자</label>
+              <input type="text" id="bookAuthor" placeholder="저자명">
+            </div>
+            <div class="form-group">
+              <label for="bookLibrary">🏛️ 도서관</label>
+              <input type="text" id="bookLibrary" placeholder="빌린 도서관명">
+            </div>
+            <div class="form-group">
+              <label for="borrowDate">📅 대출일</label>
+              <input type="date" id="borrowDate">
+            </div>
+            <div class="form-group">
+              <label for="returnDate">📅 반납일</label>
+              <input type="date" id="returnDate">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" id="saveBookBtn">저장</button>
+            <button class="btn btn-ghost" id="cancelBookBtn">취소</button>
+          </div>
+        </div>
+
+        <!-- 책 목록 -->
+        <div class="books-list" id="booksList">
+          <div class="empty-state" id="booksEmpty">
+            <div class="empty-icon">📚</div>
+            <p>아직 등록된 책이 없습니다</p>
+            <p class="empty-sub">위의 '새 책 추가' 버튼을 눌러 시작하세요!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 이용증 탭 ===== -->
+      <section class="tab-panel" id="panel-cards">
+        <div class="panel-header">
+          <h2>🪪 도서관 이용증</h2>
+          <div class="panel-header-actions">
+            <a href="library-cards/" class="btn btn-sm btn-ghost" title="이용증 이미지 폴더 열기">📁 폴더 열기</a>
+            <button class="btn btn-primary" id="addCardBtn">
+              <span>+</span> 이용증 추가
+            </button>
+          </div>
+        </div>
+
+        <!-- 이용증 추가 폼 -->
+        <div class="form-card hidden" id="cardForm">
+          <h3>새 이용증 등록</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="cardLibName">🏛️ 도서관 이름</label>
+              <input type="text" id="cardLibName" placeholder="도서관 이름">
+            </div>
+            <div class="form-group">
+              <label for="cardNumber">🔢 회원번호</label>
+              <input type="text" id="cardNumber" placeholder="회원번호">
+            </div>
+            <div class="form-group">
+              <label for="cardHolder">👤 이름</label>
+              <input type="text" id="cardHolder" placeholder="회원 이름">
+            </div>
+            <div class="form-group">
+              <label for="cardExpiry">📅 유효기간</label>
+              <input type="date" id="cardExpiry">
+            </div>
+            <div class="form-group full-width">
+              <label for="cardImage">📷 이용증 사진 (선택)</label>
+              <div class="image-upload-area" id="cardImageDropZone">
+                <input type="file" id="cardImage" accept="image/*" capture="environment" style="display:none">
+                <div class="image-upload-placeholder" id="cardImagePreviewArea">
+                  <span>📷</span>
+                  <p>클릭하여 이용증 사진을 촬영하거나 업로드</p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group full-width">
+              <label for="cardColor">🎨 카드 색상</label>
+              <div class="color-picker">
+                <button class="color-opt selected" data-color="gradient-blue"
+                  style="background: linear-gradient(135deg, #667eea, #764ba2)"></button>
+                <button class="color-opt" data-color="gradient-green"
+                  style="background: linear-gradient(135deg, #11998e, #38ef7d)"></button>
+                <button class="color-opt" data-color="gradient-orange"
+                  style="background: linear-gradient(135deg, #f093fb, #f5576c)"></button>
+                <button class="color-opt" data-color="gradient-dark"
+                  style="background: linear-gradient(135deg, #0f0c29, #302b63)"></button>
+                <button class="color-opt" data-color="gradient-sunset"
+                  style="background: linear-gradient(135deg, #fc4a1a, #f7b733)"></button>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" id="saveCardBtn">저장</button>
+            <button class="btn btn-ghost" id="cancelCardBtn">취소</button>
+          </div>
+        </div>
+
+        <!-- 이용증 목록 -->
+        <div class="cards-grid" id="cardsList">
+          <div class="empty-state" id="cardsEmpty">
+            <div class="empty-icon">🪪</div>
+            <p>등록된 이용증이 없습니다</p>
+            <p class="empty-sub">도서관 이용증을 추가해보세요!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 좋아하는 작가 탭 ===== -->
+      <section class="tab-panel" id="panel-authors">
+        <div class="panel-header">
+          <h2>✍️ 좋아하는 작가</h2>
+          <button class="btn btn-primary" id="addAuthorBtn">
+            <span>+</span> 작가 추가
+          </button>
+        </div>
+
+        <!-- 작가 추가 폼 -->
+        <div class="form-card hidden" id="authorForm">
+          <h3>좋아하는 작가 등록</h3>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="authorName">✏️ 작가 이름</label>
+              <input type="text" id="authorName" placeholder="작가 이름">
+            </div>
+            <div class="form-group">
+              <label for="authorGenre">📂 장르</label>
+              <select id="authorGenre">
+                <option value="소설">소설</option>
+                <option value="에세이">에세이</option>
+                <option value="시">시</option>
+                <option value="자기계발">자기계발</option>
+                <option value="과학">과학</option>
+                <option value="역사">역사</option>
+                <option value="경제/경영">경제/경영</option>
+                <option value="IT/기술">IT/기술</option>
+                <option value="기타">기타</option>
+              </select>
+            </div>
+            <div class="form-group full-width">
+              <label for="authorMemo">📝 메모</label>
+              <input type="text" id="authorMemo" placeholder="이 작가를 좋아하는 이유 등">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" id="saveAuthorBtn">저장</button>
+            <button class="btn btn-ghost" id="cancelAuthorBtn">취소</button>
+          </div>
+        </div>
+
+        <!-- 작가 목록 -->
+        <div class="authors-list" id="authorsList">
+          <div class="empty-state" id="authorsEmpty">
+            <div class="empty-icon">✍️</div>
+            <p>등록된 작가가 없습니다</p>
+            <p class="empty-sub">좋아하는 작가를 추가하면 최신 책 링크를 확인할 수 있어요!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 추천 도서관 탭 ===== -->
+      <section class="tab-panel" id="panel-recommend">
+        <div class="panel-header">
+          <h2>🏛️ 가볼만한 도서관 추천</h2>
+          <div class="filter-group">
+            <button class="filter-btn active" data-region="all">전체</button>
+            <button class="filter-btn" data-region="서울">서울</button>
+            <button class="filter-btn" data-region="경기">경기</button>
+            <button class="filter-btn" data-region="인천">인천</button>
+            <button class="filter-btn" data-region="기타">기타</button>
+          </div>
+        </div>
+
+        <div class="recommend-grid" id="recommendList">
+          <!-- JS에서 동적 생성 -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>💾 모든 데이터는 브라우저에 자동 저장됩니다</p>
+    </footer>
+  </div>
+
+  <!-- Scanner Modal -->
+  <div class="scanner-overlay hidden" id="scannerOverlay">
+    <div class="scanner-modal">
+      <div class="scanner-header">
+        <h3>📷 ISBN 바코드 스캔</h3>
+        <button class="scanner-close-btn" id="closeScannerBtn">✕</button>
+      </div>
+      <div class="scanner-body">
+        <div id="scannerViewfinder"></div>
+        <div class="scanner-status" id="scannerStatus">
+          <div class="scanner-pulse"></div>
+          <span>카메라를 책 뒷면의 바코드에 맞춰주세요</span>
+        </div>
+      </div>
+      <div class="scanner-result hidden" id="scannerResult">
+        <div class="scanner-result-icon">✅</div>
+        <div class="scanner-result-title" id="scannedTitle">-</div>
+        <div class="scanner-result-author" id="scannedAuthor">-</div>
+        <div class="scanner-result-isbn" id="scannedIsbn">-</div>
+        <div class="scanner-result-actions">
+          <button class="btn btn-primary" id="scannerAddBtn">📚 빌린 책에 추가</button>
+          <button class="btn btn-ghost" id="scannerRetryBtn">🔄 다시 스캔</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 모바일 연결 모달 -->
+  <div class="modal-overlay hidden" id="mobileModal">
+    <div class="modal-content" style="max-width: 320px; text-align: center;">
+      <h3>📱 모바일 기기 연결</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
+        상태: 동일한 Wi-Fi에 접속해주세요
+      </p>
+      <div id="qrcode"
+        style="background: white; padding: 16px; border-radius: 12px; display: inline-block; margin-bottom: 20px;">
+      </div>
+      <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; font-size: 0.8rem;">
+        <p style="margin-bottom: 8px;"><strong>접속 주소:</strong> <code id="mobileUrl"></code></p>
+        <p style="margin:0; font-size: 0.75rem; color: var(--text-muted);">* PC에서 서버가 실행 중이어야 합니다.</p>
+      </div>
+      <div class="form-actions" style="margin-top: 20px;">
+        <button class="btn btn-primary" id="closeMobileBtn" style="width: 100%;">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
