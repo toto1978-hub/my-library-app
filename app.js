@@ -768,12 +768,25 @@ function openScanner() {
     html5QrScanner = new Html5Qrcode('scannerViewfinder');
 
     const config = {
-      fps: 10,
-      qrbox: { width: 300, height: 150 },
+      fps: 20, // Increased for smoother movement
+      qrbox: (viewfinderWidth, viewfinderHeight) => {
+        // Dynamic box sizing
+        const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+        const boxSize = Math.floor(minEdgeSize * 0.8);
+        return { width: boxSize, height: Math.floor(boxSize / 2) };
+      },
+      aspectRatio: 1.0,
+      experimentalFeatures: {
+        useBarCodeDetectorIfSupported: true,
+      },
       formatsToSupport: [
         Html5QrcodeSupportedFormats.EAN_13,
         Html5QrcodeSupportedFormats.EAN_8,
         Html5QrcodeSupportedFormats.CODE_128,
+        Html5QrcodeSupportedFormats.CODE_39,
+        Html5QrcodeSupportedFormats.UPC_A,
+        Html5QrcodeSupportedFormats.UPC_E,
+        Html5QrcodeSupportedFormats.ITF,
         Html5QrcodeSupportedFormats.QR_CODE,
       ],
     };
@@ -960,12 +973,23 @@ function retryScanner() {
     html5QrScanner.start(
       { facingMode: 'environment' },
       {
-        fps: 10,
-        qrbox: { width: 300, height: 150 },
+        fps: 20,
+        qrbox: (viewfinderWidth, viewfinderHeight) => {
+          const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+          const boxSize = Math.floor(minEdgeSize * 0.8);
+          return { width: boxSize, height: Math.floor(boxSize / 2) };
+        },
+        experimentalFeatures: {
+          useBarCodeDetectorIfSupported: true,
+        },
         formatsToSupport: [
           Html5QrcodeSupportedFormats.EAN_13,
           Html5QrcodeSupportedFormats.EAN_8,
           Html5QrcodeSupportedFormats.CODE_128,
+          Html5QrcodeSupportedFormats.CODE_39,
+          Html5QrcodeSupportedFormats.UPC_A,
+          Html5QrcodeSupportedFormats.UPC_E,
+          Html5QrcodeSupportedFormats.ITF,
           Html5QrcodeSupportedFormats.QR_CODE,
         ],
       },
