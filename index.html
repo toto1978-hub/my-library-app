@@ -35,7 +35,10 @@
         <p class="header-subtitle">내 독서 생활을 한 곳에서</p>
       </div>
       <div class="header-right">
-        <span class="date-display" id="currentDate"></span>
+        <div class="header-info">
+          <span class="date-display" id="currentDate"></span>
+          <span class="weather-display" id="weatherDisplay">실시간 날씨 로딩 중...</span>
+        </div>
         <div style="display:flex; gap:8px;">
           <button class="btn btn-sm btn-ghost" id="mobileConnectBtn" title="모바일 연결 QR">📱 모바일</button>
           <button class="btn btn-sm btn-notify" id="notifyToggle" title="반납 알림 설정">
@@ -262,6 +265,7 @@
             <button class="filter-btn" data-region="경기">경기</button>
             <button class="filter-btn" data-region="인천">인천</button>
             <button class="filter-btn" data-region="기타">기타</button>
+            <button class="filter-btn" data-region="해외">해외</button>
           </div>
         </div>
 
@@ -319,6 +323,12 @@
       </p>
       <div id="qrcode"
         style="background: white; padding: 16px; border-radius: 12px; display: inline-block; margin-bottom: 20px;">
+      </div>
+      <div style="margin-top: 10px;">
+        <button class="btn btn-sm btn-ghost" id="forceRefreshBtn"
+          style="width: 100%; border-color: var(--accent-blue); color: var(--accent-blue);">
+          🔄 최신 상태로 새로고침
+        </button>
       </div>
       <div class="form-actions" style="margin-top: 20px;">
         <button class="btn btn-primary" id="closeMobileBtn" style="width: 100%;">닫기</button>

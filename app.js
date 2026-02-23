@@ -5,8 +5,27 @@
 // ===== State =====
 let state = {
   books: [],
-  cards: [],
-  authors: [],
+  cards: [
+    {
+      id: 1708700000000,
+      libName: '경기도서관',
+      number: '1410 2015 0511 60',
+      holder: '서지은',
+      expiry: '',
+      color: 'gradient-blue',
+      image: null
+    }
+  ],
+  authors: [
+    { id: 1708700000001, name: '장강명', genre: '소설', memo: '' },
+    { id: 1708700000002, name: '김다위', genre: '설교', memo: '' },
+    { id: 1708700000003, name: '이주영', genre: '에세이', memo: '' },
+    { id: 1708700000004, name: '한나 아렌트', genre: '사회과학', memo: '' },
+    { id: 1708700000005, name: '마이클 샌델', genre: '사회과학', memo: '' },
+    { id: 1708700000006, name: '헨리 나우웬', genre: '에세이', memo: '' },
+    { id: 1708700000007, name: 'CS Lewis', genre: '에세이', memo: '' },
+    { id: 1708700000008, name: '유시민', genre: '사회과학', memo: '' },
+  ],
 };
 
 // ===== Recommended Libraries Data =====
@@ -18,6 +37,7 @@ const recommendedLibraries = [
     address: '서울 중구 세종대로 110',
     hours: '평일 09:00~21:00 / 주말 09:00~18:00',
     mapUrl: 'https://map.naver.com/v5/search/서울도서관',
+    websiteUrl: 'https://lib.seoul.go.kr',
     emoji: '🏛️',
     restaurants: [
       { name: '무교동 낙지', category: '한식', rating: 4.5, blogUrl: 'https://search.naver.com/search.naver?query=무교동+낙지+맛집+블로그' },
@@ -31,6 +51,7 @@ const recommendedLibraries = [
     address: '서울 서초구 반포대로 201',
     hours: '평일 09:00~18:00 / 토 09:00~17:00',
     mapUrl: 'https://map.naver.com/v5/search/국립중앙도서관',
+    websiteUrl: 'https://www.nl.go.kr',
     emoji: '📖',
     restaurants: [
       { name: '반포 리첸 카페', category: '카페/디저트', rating: 4.4, blogUrl: 'https://search.naver.com/search.naver?query=반포+리첸카페+블로그' },
@@ -44,6 +65,7 @@ const recommendedLibraries = [
     address: '서울 강남구 영동대로 513 코엑스몰',
     hours: '매일 10:00~22:00',
     mapUrl: 'https://map.naver.com/v5/search/별마당도서관',
+    websiteUrl: 'https://www.starfield.co.kr/coexmall/starfieldLibrary/library.do',
     emoji: '⭐',
     restaurants: [
       { name: '피에노 코엑스', category: '이탈리안', rating: 4.3, blogUrl: 'https://search.naver.com/search.naver?query=코엑스+피에노+맛집+블로그' },
@@ -57,6 +79,7 @@ const recommendedLibraries = [
     address: '서울 송파구 올림픽로 32길 2-21',
     hours: '화~일 10:00~20:00 (월 휴관)',
     mapUrl: 'https://map.naver.com/v5/search/서울책보고',
+    websiteUrl: 'http://www.seoulbookbogo.kr',
     emoji: '📚',
     restaurants: [
       { name: '잠실 새마을식당', category: '한식', rating: 4.2, blogUrl: 'https://search.naver.com/search.naver?query=잠실+새마을식당+블로그' },
@@ -70,6 +93,7 @@ const recommendedLibraries = [
     address: '서울 종로구 북촌로5길 48',
     hours: '평일 09:00~22:00 / 주말 09:00~17:00',
     mapUrl: 'https://map.naver.com/v5/search/정독도서관',
+    websiteUrl: 'https://jdlib.sen.go.kr',
     emoji: '🌿',
     restaurants: [
       { name: '북촌 두레', category: '한정식', rating: 4.7, blogUrl: 'https://search.naver.com/search.naver?query=북촌+두레+한정식+블로그' },
@@ -83,6 +107,7 @@ const recommendedLibraries = [
     address: '경기 용인시 수지구 수풍로 116번길 22',
     hours: '화~토 10:00~18:00',
     mapUrl: 'https://map.naver.com/v5/search/느티나무도서관',
+    websiteUrl: 'http://www.neutinamu.org',
     emoji: '🌳',
     restaurants: [
       { name: '수지 봉된장', category: '한식', rating: 4.4, blogUrl: 'https://search.naver.com/search.naver?query=수지+봉된장+맛집+블로그' },
@@ -96,6 +121,7 @@ const recommendedLibraries = [
     address: '경기 성남시 분당구 판교역로 200',
     hours: '평일 09:00~22:00 / 주말 09:00~17:00',
     mapUrl: 'https://map.naver.com/v5/search/판교도서관',
+    websiteUrl: 'https://pcl.snlib.go.kr',
     emoji: '💻',
     restaurants: [
       { name: '판교 크래프트한스', category: '양식', rating: 4.5, blogUrl: 'https://search.naver.com/search.naver?query=판교+크래프트한스+맛집+블로그' },
@@ -109,6 +135,7 @@ const recommendedLibraries = [
     address: '경기 파주시 회동길 145',
     hours: '24시간 개방',
     mapUrl: 'https://map.naver.com/v5/search/파주지혜의숲',
+    websiteUrl: 'http://forestofwisdom.or.kr',
     emoji: '🌲',
     restaurants: [
       { name: '더 북 카페', category: '카페', rating: 4.6, blogUrl: 'https://search.naver.com/search.naver?query=파주출판도시+더북카페+블로그' },
@@ -122,6 +149,7 @@ const recommendedLibraries = [
     address: '인천 미추홀구 석정로 89',
     hours: '평일 09:00~18:00 / 토 09:00~17:00',
     mapUrl: 'https://map.naver.com/v5/search/인천광역시립도서관',
+    websiteUrl: 'https://www.michuhollib.go.kr',
     emoji: '🌊',
     restaurants: [
       { name: '신포만두', category: '만두/중식', rating: 4.5, blogUrl: 'https://search.naver.com/search.naver?query=인천+신포만두+맛집+블로그' },
@@ -135,6 +163,7 @@ const recommendedLibraries = [
     address: '인천 연수구 센트럴로 194',
     hours: '평일 09:00~22:00 / 주말 09:00~17:00',
     mapUrl: 'https://map.naver.com/v5/search/송도국제도서관',
+    websiteUrl: 'https://www.yslib.go.kr/sdlib/index.do',
     emoji: '🌏',
     restaurants: [
       { name: '송도 트리플스트리트 맛집거리', category: '다양', rating: 4.3, blogUrl: 'https://search.naver.com/search.naver?query=송도+트리플스트리트+맛집+블로그' },
@@ -148,6 +177,7 @@ const recommendedLibraries = [
     address: '부산 부산진구 백양대로 76',
     hours: '평일 09:00~18:00',
     mapUrl: 'https://map.naver.com/v5/search/부산시립시민도서관',
+    websiteUrl: 'https://www.siminlib.go.kr',
     emoji: '🐟',
     restaurants: [
       { name: '할매국밥 서면', category: '국밥', rating: 4.6, blogUrl: 'https://search.naver.com/search.naver?query=서면+할매국밥+맛집+블로그' },
@@ -161,10 +191,120 @@ const recommendedLibraries = [
     address: '대전 서구 한밭대로 652',
     hours: '평일 09:00~18:00',
     mapUrl: 'https://map.naver.com/v5/search/한밭도서관',
+    websiteUrl: 'https://www.daejeon.go.kr/hanbatlibrary',
     emoji: '🌸',
     restaurants: [
       { name: '성심당 본점', category: '베이커리', rating: 4.8, blogUrl: 'https://search.naver.com/search.naver?query=대전+성심당+본점+블로그' },
       { name: '두부두루치기 맛집', category: '한식', rating: 4.5, blogUrl: 'https://search.naver.com/search.naver?query=대전+한밭수목원+근처+맛집+블로그' },
+    ],
+  },
+  {
+    name: '경기도서관',
+    region: '경기',
+    desc: '2026년 정식 개관한 국내 최대 규모의 공공도서관. 나선형 구조의 "달팽이 도서관"과 AI 스튜디오가 특징입니다.',
+    address: '경기 수원시 영통구 도청로 40 (이의동)',
+    hours: '화~금 10:00~21:00 / 토~일 10:00~18:00 (월 휴관)',
+    mapUrl: 'https://map.naver.com/v5/search/경기도서관+광교',
+    websiteUrl: 'https://gglib.gg.go.kr',
+    emoji: '🐚',
+    restaurants: [
+      { name: '광교더브라운', category: '브런치', rating: 4.4, blogUrl: 'https://search.naver.com/search.naver?query=광교+더브라운+블로그' },
+      { name: '세상의모든아침 광교', category: '브런치', rating: 4.5, blogUrl: 'https://search.naver.com/search.naver?query=세상의모든아침+광교+블로그' },
+    ],
+  },
+  {
+    name: '트리니티 대학교 도서관',
+    region: '해외',
+    desc: '아일랜드에서 가장 오래된 도서관으로, 65m 길이의 "롱 룸(Long Room)"과 "켈스의 서"로 유명합니다.',
+    address: 'College Green, Dublin 2, Ireland',
+    hours: '매일 09:30~17:00 (시즌별 상이)',
+    mapUrl: 'https://www.google.com/maps/search/Trinity+College+Library+Dublin',
+    websiteUrl: 'https://www.tcd.ie/library/',
+    emoji: '☘️',
+    restaurants: [
+      { name: 'The Winding Stair', category: '아이리쉬', rating: 4.6, blogUrl: 'https://www.google.com/search?q=The+Winding+Stair+Dublin+review' },
+      { name: 'Queen of Tarts', category: '카페', rating: 4.5, blogUrl: 'https://www.google.com/search?q=Queen+of+Tarts+Dublin+review' },
+    ],
+  },
+  {
+    name: '아드몬트 수도원 도서관',
+    region: '해외',
+    desc: '세계에서 가장 큰 수도원 도서관으로, 후기 바로크 양식의 화려한 흰색과 금색 장식이 압권입니다.',
+    address: 'Admont 1, 8911 Admont, Austria',
+    hours: '매일 10:00~17:00 (동절기 휴관 가능)',
+    mapUrl: 'https://www.google.com/maps/search/Admont+Abbey+Library',
+    websiteUrl: 'https://www.stiftadmont.at/en/library/',
+    emoji: '⛪',
+    restaurants: [
+      { name: 'Stiftskeller Admont', category: '현지식', rating: 4.3, blogUrl: 'https://www.google.com/search?q=Stiftskeller+Admont+review' },
+    ],
+  },
+  {
+    name: '왕립 포르투갈 도서실',
+    region: '해외',
+    desc: '브라질 리우데자네이루에 위치한 환상적인 네오-마누엘 건축 양식의 도서관입니다.',
+    address: 'R. Luís de Camões, 30 - Centro, Rio de Janeiro, Brazil',
+    hours: '평일 10:00~17:00',
+    mapUrl: 'https://www.google.com/maps/search/Real+Gabinete+Português+de+Leitura',
+    websiteUrl: 'https://www.realgabinete.com.br',
+    emoji: '🇧🇷',
+    restaurants: [
+      { name: 'Confeitaria Colombo', category: '카페/디저트', rating: 4.7, blogUrl: 'https://www.google.com/search?q=Confeitaria+Colombo+Rio+review' },
+    ],
+  },
+  {
+    name: '슈투트가르트 시립 도서관',
+    region: '해외',
+    desc: '한국인 건축가 이은영이 설계한 현대적인 미니멀리즘의 정수. 하얀 큐브 모양의 내부가 감동적입니다.',
+    address: 'Mailänder Platz 1, 70173 Stuttgart, Germany',
+    hours: '월~토 09:00~21:00',
+    mapUrl: 'https://www.google.com/maps/search/Stuttgart+City+Library',
+    websiteUrl: 'https://www1.stuttgart.de/stadtbibliothek/',
+    emoji: '🇩🇪',
+    restaurants: [
+      { name: 'Restaurant Top Floor', category: '독일식', rating: 4.2, blogUrl: 'https://www.google.com/search?q=Restaurant+Top+Floor+Stuttgart+review' },
+    ],
+  },
+  {
+    name: '뉴욕 공공 도서관',
+    region: '해외',
+    desc: 'Beaux-Arts 양식의 상징적인 건물로, 장엄한 "로즈 메인 열람실"과 입구를 지키는 사자상 "인내"와 "용기"가 유명합니다.',
+    address: '476 5th Ave, New York, NY 10018, USA',
+    hours: '월~토 10:00~18:00 (일부 요일 연장)',
+    mapUrl: 'https://www.google.com/maps/search/New+York+Public+Library+Schwarzman+Building',
+    websiteUrl: 'https://www.nypl.org',
+    emoji: '🦁',
+    restaurants: [
+      { name: 'Pera Mediterranean', category: '지중해식', rating: 4.4, blogUrl: 'https://www.google.com/search?q=Pera+Mediterranean+NY+review' },
+      { name: 'Szechuan Gourmet', category: '중식', rating: 4.3, blogUrl: 'https://www.google.com/search?q=Szechuan+Gourmet+NY+review' },
+    ],
+  },
+  {
+    name: '타이베이 시립 도서관 (베이투)',
+    region: '해외',
+    desc: '대만 최초의 친환경 도서관으로, 나무로 지어진 "거대한 나무집" 같은 외관이 온천 공원과 아름다운 조화를 이룹니다.',
+    address: 'No. 251, Guangming Rd, Beitou District, Taipei City, Taiwan 112',
+    hours: '화~토 08:30~21:00 / 일~월 09:00~17:00',
+    mapUrl: 'https://www.google.com/maps/search/Taipei+Public+Library+Beitou+Branch',
+    websiteUrl: 'https://english.tpml.gov.taipei/',
+    emoji: '🌳',
+    restaurants: [
+      { name: 'Manwei Hot Spring Ramen', category: '라멘', rating: 4.4, blogUrl: 'https://www.google.com/search?q=Beitou+Manwei+Ramen+review' },
+      { name: 'Beitou Bomb Pancake', category: '간식', rating: 4.5, blogUrl: 'https://www.google.com/search?q=Beitou+Bomb+Scallion+Pancake+review' },
+    ],
+  },
+  {
+    name: '바티칸 사도 도서관',
+    region: '해외',
+    desc: '15세기에 설립된 인류 지식의 보고. 성서 필사본 등 헤아릴 수 없이 귀중한 세계적 고문서들을 소장하고 있습니다.',
+    address: '00120 Vatican City',
+    hours: '학술 예약제 (박물관 투어 시 일부 관람 가능)',
+    mapUrl: 'https://www.google.com/maps/search/Vatican+Apostolic+Library',
+    websiteUrl: 'https://www.vaticanlibrary.va',
+    emoji: '📜',
+    restaurants: [
+      { name: 'Pizzarium by Bonci', category: '피자', rating: 4.6, blogUrl: 'https://www.google.com/search?q=Pizzarium+Bonci+Rome+review' },
+      { name: 'Alice Pizza', category: '피자', rating: 4.4, blogUrl: 'https://www.google.com/search?q=Alice+Pizza+Vatican+review' },
     ],
   },
 ];
@@ -197,9 +337,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setupScanner();
   setupNotifications();
   setupMobileConnect();
-  setupDataSync();
   renderAll();
   updateDate();
+  updateWeather();
   checkReturnNotifications();
 });
 
@@ -213,6 +353,53 @@ function loadState() {
   if (saved) {
     try {
       state = JSON.parse(saved);
+
+      // Auto-register Gyeonggi Library card from image if missing
+      const cardNum = '1410 2015 0511 60';
+      const exists = state.cards && state.cards.some(c => c.number.replace(/\s/g, '') === cardNum.replace(/\s/g, ''));
+      if (!exists) {
+        if (!state.cards) state.cards = [];
+        state.cards.push({
+          id: 1708700000000,
+          libName: '경기도서관',
+          number: cardNum,
+          holder: '서지은',
+          expiry: '',
+          color: 'gradient-blue',
+          image: null
+        });
+        saveState();
+      }
+
+      // Auto-register authors if missing
+      const defaultAuthors = [
+        { name: '장강명', genre: '소설' },
+        { name: '김다위', genre: '설교' },
+        { name: '이주영', genre: '에세이' },
+        { name: '한나 아렌트', genre: '사회과학' },
+        { name: '마이클 샌델', genre: '사회과학' },
+        { name: '헨리 나우웬', genre: '에세이' },
+        { name: 'CS Lewis', genre: '에세이' },
+        { name: '유시민', genre: '사회과학' }
+      ];
+
+      let authorsChanged = false;
+      if (!state.authors) state.authors = [];
+
+      defaultAuthors.forEach((da, idx) => {
+        const exists = state.authors.some(a => a.name === da.name);
+        if (!exists) {
+          state.authors.push({
+            id: 1708700000001 + idx,
+            name: da.name,
+            genre: da.genre,
+            memo: ''
+          });
+          authorsChanged = true;
+        }
+      });
+
+      if (authorsChanged) saveState();
     } catch {
       state = { books: [], cards: [], authors: [] };
     }
@@ -224,6 +411,27 @@ function updateDate() {
   const now = new Date();
   const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
   document.getElementById('currentDate').textContent = now.toLocaleDateString('ko-KR', options);
+}
+
+// ===== Weather Display =====
+async function updateWeather() {
+  const weatherEl = document.getElementById('weatherDisplay');
+  if (!weatherEl) return;
+
+  try {
+    // Using wttr.in with specific format: %c (condition icon), %t (temperature)
+    // We fetch from 'Seoul' or use auto-location (wttr.in/)
+    const response = await fetch('https://wttr.in/Seoul?format=%c+%t');
+    if (response.ok) {
+      const weatherText = await response.text();
+      weatherEl.textContent = weatherText.trim();
+    } else {
+      weatherEl.textContent = '날씨 정보를 가져올 수 없습니다';
+    }
+  } catch (err) {
+    console.error('Weather fetch error:', err);
+    weatherEl.textContent = '날씨 로딩 실패';
+  }
 }
 
 // ===== Tab Navigation =====
@@ -504,6 +712,7 @@ function renderCards() {
   }
 
   empty.style.display = 'none';
+  grid.style.display = 'grid'; // Ensure grid layout
 
   state.cards.forEach(card => {
     const expiryText = card.expiry ? `유효기간: ${card.expiry}` : '';
@@ -523,6 +732,9 @@ function renderCards() {
           <img src="${card.image}" alt="이용증 사진">
         </div>
       </div>` : '';
+
+    const barcodeId = `barcode-${card.id}`;
+
     el.innerHTML = `
       <button class="card-delete-btn" onclick="deleteCard(${card.id})">✕</button>
       <div class="card-top">
@@ -532,6 +744,9 @@ function renderCards() {
         </div>
       </div>
       <div class="card-number">${escapeHtml(card.number || '0000 0000')}</div>
+      <div class="card-barcode-container">
+        <canvas class="card-barcode-canvas" id="${barcodeId}"></canvas>
+      </div>
       <div class="card-bottom">
         <div>
           <div class="card-label">MEMBER</div>
@@ -542,6 +757,24 @@ function renderCards() {
       ${imageSection}
     `;
     grid.appendChild(el);
+
+    // Generate Barcode
+    if (card.number) {
+      try {
+        const cleanNumber = card.number.replace(/\s/g, '');
+        JsBarcode(`#${barcodeId}`, cleanNumber, {
+          format: "CODE128",
+          width: 2,
+          height: 40,
+          displayValue: false,
+          background: "transparent",
+          lineColor: "#000",
+          margin: 0
+        });
+      } catch (err) {
+        console.error('Barcode generation failed:', err);
+      }
+    }
   });
 }
 
@@ -711,6 +944,7 @@ function renderRecommend(region) {
         <div class="recommend-info">📍 ${escapeHtml(lib.address)}<br>🕐 ${escapeHtml(lib.hours)}</div>
         <div class="recommend-actions">
           <a href="${lib.mapUrl}" target="_blank" class="btn-link">🗺️ 네이버 지도</a>
+          ${lib.websiteUrl ? `<a href="${lib.websiteUrl}" target="_blank" class="btn-link">🌐 공식 홈페이지</a>` : ''}
           <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(lib.address)}" target="_blank" class="btn-link">🧭 길찾기</a>
           <a href="${blogSearchUrl}" target="_blank" class="btn-link">🍽️ 근처 맛집</a>
         </div>
@@ -745,6 +979,11 @@ function setupScanner() {
   addBtn.addEventListener('click', addScannedBook);
   retryBtn.addEventListener('click', retryScanner);
 
+  const torchBtn = document.getElementById('torchBtn');
+  if (torchBtn) {
+    torchBtn.addEventListener('click', toggleTorch);
+  }
+
   // Close on overlay click (outside modal)
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) closeScanner();
@@ -774,16 +1013,20 @@ function openScanner() {
       html5QrScanner.clear();
     }
     html5QrScanner = new Html5Qrcode('scannerViewfinder');
-
     const config = {
-      fps: 20, // Increased for smoother movement
+      fps: 30, // Increased FPS for faster detection
       qrbox: (viewfinderWidth, viewfinderHeight) => {
-        // Dynamic box sizing
-        const minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
-        const boxSize = Math.floor(minEdgeSize * 0.8);
-        return { width: boxSize, height: Math.floor(boxSize / 2) };
+        // Optimized for horizontal barcodes (ISBN)
+        const width = Math.floor(viewfinderWidth * 0.9);
+        const height = Math.floor(width * 0.45);
+        return { width, height };
       },
       aspectRatio: 1.0,
+      videoConstraints: {
+        facingMode: 'environment',
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+      },
       experimentalFeatures: {
         useBarCodeDetectorIfSupported: true,
       },
@@ -794,8 +1037,6 @@ function openScanner() {
         Html5QrcodeSupportedFormats.CODE_39,
         Html5QrcodeSupportedFormats.UPC_A,
         Html5QrcodeSupportedFormats.UPC_E,
-        Html5QrcodeSupportedFormats.ITF,
-        Html5QrcodeSupportedFormats.QR_CODE,
       ],
     };
 
@@ -809,7 +1050,9 @@ function openScanner() {
           status.innerHTML = `<span style="color:var(--accent-red)">⚠️ 카메라 권한을 허용해주세요!</span>`;
         }
       }
-    ).catch(err => {
+    ).then(() => {
+      showTorchBtnIfSupported();
+    }).catch(err => {
       console.error('Camera start error:', err);
       let errorMsg = '카메라 시작 실패 (HTTPS 확인 필수)';
       if (err.name === 'NotAllowedError' || err.toString().includes('Permission')) {
@@ -833,6 +1076,57 @@ function closeScanner() {
     html5QrScanner.stop().catch(() => { });
     html5QrScanner.clear();
     html5QrScanner = null;
+    hideTorchBtn();
+  }
+}
+
+let isTorchOn = false;
+
+function showTorchBtnIfSupported() {
+  if (!html5QrScanner) return;
+
+  const torchBtn = document.getElementById('torchBtn');
+  if (!torchBtn) return;
+
+  try {
+    const capabilities = html5QrScanner.getRunningTrackCapabilities();
+    if (capabilities.torch) {
+      torchBtn.style.display = 'flex';
+    } else {
+      torchBtn.style.display = 'none';
+    }
+  } catch (err) {
+    torchBtn.style.display = 'none';
+  }
+}
+
+function hideTorchBtn() {
+  const torchBtn = document.getElementById('torchBtn');
+  if (torchBtn) {
+    torchBtn.style.display = 'none';
+    torchBtn.classList.remove('active');
+    isTorchOn = false;
+  }
+}
+
+async function toggleTorch() {
+  if (!html5QrScanner) return;
+  const torchBtn = document.getElementById('torchBtn');
+
+  try {
+    isTorchOn = !isTorchOn;
+    await html5QrScanner.applyVideoConstraints({
+      advanced: [{ torch: isTorchOn }]
+    });
+
+    if (isTorchOn) {
+      torchBtn.classList.add('active');
+    } else {
+      torchBtn.classList.remove('active');
+    }
+  } catch (err) {
+    console.error('Torch error:', err);
+    showToast('⚠️ 손전등 제어에 실패했습니다.');
   }
 }
 
@@ -860,6 +1154,10 @@ async function onScanSuccess(decodedText) {
     if (bookInfo) {
       scannedBookData = bookInfo;
       showScanResult(bookInfo);
+      // Auto-add after a brief delay to show the user what was found
+      setTimeout(() => {
+        addScannedBook();
+      }, 1200);
     } else {
       // ISBN found but no data — still let user add manually
       scannedBookData = {
@@ -1204,8 +1502,18 @@ function setupMobileConnect() {
   const closeBtn = document.getElementById('closeMobileBtn');
   const qrContainer = document.getElementById('qrcode');
   const urlEl = document.getElementById('mobileUrl');
+  const refreshBtn = document.getElementById('forceRefreshBtn');
 
   if (!btn || !modal) return;
+
+  // Add click listener for Force Refresh
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set('v', Date.now()); // Cache busting
+      window.location.href = currentUrl.toString();
+    });
+  }
 
   const ip = '192.168.0.7'; // Detected local IP
   const port = '5500';      // Default port for Live Server
@@ -1213,7 +1521,7 @@ function setupMobileConnect() {
 
   btn.addEventListener('click', () => {
     modal.classList.remove('hidden');
-    urlEl.textContent = url;
+    if (urlEl) urlEl.textContent = url;
 
     // Generate QR Code if not already generated
     if (qrContainer.innerHTML === '') {
@@ -1238,71 +1546,4 @@ function setupMobileConnect() {
   });
 }
 
-// ===== 🔄 Data Sync (Export/Import) =====
-function setupDataSync() {
-  const syncBtn = document.getElementById('dataSyncBtn');
-  const modal = document.getElementById('syncModal');
-  const closeBtn = document.getElementById('closeSyncBtn');
-  const exportBtn = document.getElementById('exportBtn');
-  const importBtn = document.getElementById('importBtn');
-  const importFile = document.getElementById('importFile');
 
-  if (!syncBtn || !modal) return;
-
-  syncBtn.addEventListener('click', () => modal.classList.remove('hidden'));
-  closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
-  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
-
-  // Export Data
-  exportBtn.addEventListener('click', () => {
-    const dataStr = JSON.stringify(state, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `my-library-backup-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    showToast('📤 백업 파일이 생성되었습니다!');
-  });
-
-  // Import Data
-  importBtn.addEventListener('click', () => importFile.click());
-
-  importFile.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    if (!confirm('📥 데이터를 가져오시겠습니까? 현재 기기에 저장된 데이터는 새 데이터로 덮어씌워집니다.')) {
-      importFile.value = '';
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const importedState = JSON.parse(event.target.result);
-
-        // Basic validation
-        if (importedState.books && importedState.cards && importedState.authors) {
-          state = importedState;
-          saveState();
-          renderAll();
-          modal.classList.add('hidden');
-          showToast('✅ 데이터 복구가 완료되었습니다!');
-        } else {
-          throw new Error('Invalid format');
-        }
-      } catch (err) {
-        showToast('❌ 올바르지 않은 백업 파일입니다.');
-        console.error('Import error:', err);
-      }
-      importFile.value = '';
-    };
-    reader.readAsText(file);
-  });
-}
