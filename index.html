@@ -15,6 +15,7 @@
   <!-- Libraries -->
   <script src="https://unpkg.com/html5-qrcode"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 </head>
 
 <body>
@@ -36,7 +37,6 @@
       <div class="header-right">
         <span class="date-display" id="currentDate"></span>
         <div style="display:flex; gap:8px;">
-          <button class="btn btn-sm btn-ghost" id="dataSyncBtn" title="데이터 백업 및 복구">🔄 데이터</button>
           <button class="btn btn-sm btn-ghost" id="mobileConnectBtn" title="모바일 연결 QR">📱 모바일</button>
           <button class="btn btn-sm btn-notify" id="notifyToggle" title="반납 알림 설정">
             🔔 알림 설정
@@ -220,6 +220,8 @@
               <select id="authorGenre">
                 <option value="소설">소설</option>
                 <option value="에세이">에세이</option>
+                <option value="설교">설교</option>
+                <option value="사회과학">사회과학</option>
                 <option value="시">시</option>
                 <option value="자기계발">자기계발</option>
                 <option value="과학">과학</option>
@@ -280,11 +282,16 @@
   <div class="scanner-overlay hidden" id="scannerOverlay">
     <div class="scanner-modal">
       <div class="scanner-header">
-        <h3>📷 ISBN 바코드 스캔</h3>
-        <button class="scanner-close-btn" id="closeScannerBtn">✕</button>
+        <h3>📷 ISBN 바코드 ส캔</h3>
+        <div style="display: flex; gap: 8px;">
+          <button class="scanner-torch-btn" id="torchBtn" title="손전등 켜기/끄기">🔦</button>
+          <button class="scanner-close-btn" id="closeScannerBtn">✕</button>
+        </div>
       </div>
       <div class="scanner-body">
-        <div id="scannerViewfinder"></div>
+        <div id="scannerViewfinder">
+          <div class="scanner-line"></div>
+        </div>
         <div class="scanner-status" id="scannerStatus">
           <div class="scanner-pulse"></div>
           <span>카메라를 책 뒷면의 바코드에 맞춰주세요</span>
@@ -313,42 +320,13 @@
       <div id="qrcode"
         style="background: white; padding: 16px; border-radius: 12px; display: inline-block; margin-bottom: 20px;">
       </div>
-      <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; font-size: 0.8rem;">
-        <p style="margin-bottom: 8px;"><strong>접속 주소:</strong> <code id="mobileUrl"></code></p>
-        <p style="margin:0; font-size: 0.75rem; color: var(--text-muted);">* PC에서 서버가 실행 중이어야 합니다.</p>
-      </div>
       <div class="form-actions" style="margin-top: 20px;">
         <button class="btn btn-primary" id="closeMobileBtn" style="width: 100%;">닫기</button>
       </div>
     </div>
   </div>
 
-  <!-- 데이터 동기화 모달 -->
-  <div class="modal-overlay hidden" id="syncModal">
-    <div class="modal-content" style="max-width: 360px;">
-      <div class="modal-header">
-        <h3>🔄 데이터 백업 및 복구</h3>
-        <button class="btn-close" id="closeSyncBtn">&times;</button>
-      </div>
-      <div class="sync-body" style="padding: 20px 0;">
-        <div class="sync-section" style="margin-bottom: 24px;">
-          <h4 style="margin-bottom: 8px;">📤 데이터 내보내기 (PC → 폰)</h4>
-          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">현재 저장된 모든 정보를 파일로 저장합니다.</p>
-          <button class="btn btn-primary" id="exportBtn" style="width: 100%;">백업 파일 다운로드</button>
-        </div>
-        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin-bottom: 24px;">
-        <div class="sync-section">
-          <h4 style="margin-bottom: 8px;">📥 데이터 가져오기 (폰에서 실행)</h4>
-          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">백업 파일을 불러와 전체 데이터를 복구합니다.</p>
-          <input type="file" id="importFile" accept=".json" style="display: none;">
-          <button class="btn btn-secondary" id="importBtn" style="width: 100%;">백업 파일 선택하기</button>
-        </div>
-      </div>
-      <p style="font-size: 0.75rem; color: var(--accent-blue); text-align: center; margin-top: 10px;">
-        * 파일을 카톡/메일로 보낸 후 폰에서 열어주세요.
-      </p>
-    </div>
-  </div>
+
 
   <script src="app.js"></script>
 </body>
